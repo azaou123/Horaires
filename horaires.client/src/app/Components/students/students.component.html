@@ -1,0 +1,125 @@
+<div class="container">
+  <div class="row my-4">
+    <div class="col-8">
+      <h2 class="my-2">Students List</h2>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEtudiant">
+        Add Student
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Student Modal -->
+  <div class="modal fade" id="addEtudiant" tabindex="-1" aria-labelledby="addEtudiantLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEtudiantLabel">Add Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addEtudiant()" #etudiantForm="ngForm" class="my-4">
+            <div class="form-group">
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" name="nom" class="form-control" [(ngModel)]="newEtudiant.nom" required>
+            </div>
+            <div class="form-group">
+              <label for="prenom">Prenom</label>
+              <input type="text" id="prenom" name="prenom" class="form-control" [(ngModel)]="newEtudiant.prenom" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-control" [(ngModel)]="newEtudiant.email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" class="form-control" [(ngModel)]="newEtudiant.password" required>
+            </div>
+            <div class="form-group">
+              <label for="filiere">Filiere</label>
+              <select id="filiere" name="filiere" class="form-control" [(ngModel)]="newEtudiant.filiereId" required>
+                <option *ngFor="let filiere of filieres" [value]="filiere.id">{{ filiere.nomFiliere }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success mt-2">Add Student</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Student Modal -->
+  <div class="modal fade" id="editEtudiantModal" tabindex="-1" aria-labelledby="editEtudiantModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editEtudiantModalLabel">Edit Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateEtudiant()" #editForm="ngForm" class="my-4">
+            <div class="form-group">
+              <label for="editNom">Nom</label>
+              <input type="text" id="editNom" name="nom" class="form-control" [(ngModel)]="selectedEtudiant.nom" required>
+            </div>
+            <div class="form-group">
+              <label for="editPrenom">Prenom</label>
+              <input type="text" id="editPrenom" name="prenom" class="form-control" [(ngModel)]="selectedEtudiant.prenom" required>
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email</label>
+              <input type="email" id="editEmail" name="email" class="form-control" [(ngModel)]="selectedEtudiant.email" required>
+            </div>
+            <div class="form-group">
+              <label for="editPassword">Password</label>
+              <input type="password" id="editPassword" name="password" class="form-control" [(ngModel)]="selectedEtudiant.password" required>
+            </div>
+            <div class="form-group">
+              <label for="editFiliere">Filiere</label>
+              <select id="editFiliere" name="filiere" class="form-control" [(ngModel)]="selectedEtudiant.filiereId" required>
+                <option *ngFor="let filiere of filieres" [value]="filiere.id">{{ filiere.nomFiliere }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Update Student</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let etudiant of etudiants">
+        <td>{{ etudiant.id }}</td>
+        <td>{{ etudiant.nom }}</td>
+        <td>{{ etudiant.prenom }}</td>
+        <td>{{ etudiant.email }}</td>
+        <td>
+          <button (click)="editEtudiant(etudiant)" class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#editEtudiantModal">Edit</button>
+          <button
+            *ngIf="etudiant.id !== undefined"
+            (click)="deleteEtudiant(etudiant.id)"
+            class="btn btn-danger btn-sm">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

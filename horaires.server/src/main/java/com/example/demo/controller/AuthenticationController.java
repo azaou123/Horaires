@@ -45,6 +45,7 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Professeur authentication failed");
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
         authenticationService.logout();

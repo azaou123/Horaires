@@ -1,0 +1,186 @@
+<!-- src/app/components/interventions/interventions.component.html -->
+<div class="container">
+  <div class="row my-3">
+    <div class="col-9"><h2>Interventions</h2></div>
+    <div class="col-3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Intervention</button>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Intervention</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addIntervention()">
+            <div class="mb-3">
+              <label for="intitule" class="form-label">Intitulé</label>
+              <input type="text" class="form-control" id="intitule" [(ngModel)]="newIntervention.intitule" name="intitule">
+            </div>
+            <div class="mb-3">
+              <label for="nombreEvaluationsInter" class="form-label">Nombre d'évaluations</label>
+              <input type="number" class="form-control" id="nombreEvaluationsInter" [(ngModel)]="newIntervention.nombreEvaluationsInter" name="nombreEvaluationsInter">
+            </div>
+            <div class="mb-3">
+              <label for="nombreHeuresCoursInter" class="form-label">Heures de cours</label>
+              <input type="number" class="form-control" id="nombreHeuresCoursInter" [(ngModel)]="newIntervention.nombreHeuresCoursInter" name="nombreHeuresCoursInter">
+            </div>
+            <div class="mb-3">
+              <label for="nombreHeuresTDInter" class="form-label">Heures de TD</label>
+              <input type="number" class="form-control" id="nombreHeuresTDInter" [(ngModel)]="newIntervention.nombreHeuresTDInter" name="nombreHeuresTDInter">
+            </div>
+            <div class="mb-3">
+              <label for="nombreHeuresTPInter" class="form-label">Heures de TP</label>
+              <input type="number" class="form-control" id="nombreHeuresTPInter" [(ngModel)]="newIntervention.nombreHeuresTPInter" name="nombreHeuresTPInter">
+            </div>
+            <div class="mb-3">
+              <label for="moduleId" class="form-label">Module</label>
+              <select class="form-select" id="moduleId" [(ngModel)]="newIntervention.moduleId" name="moduleId">
+                <option *ngFor="let module of modules" [value]="module.id">{{ module.intitule }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="professeurId" class="form-label">Professeur</label>
+              <select class="form-select" id="professeurId" [(ngModel)]="newIntervention.professeurId" name="professeurId">
+                <option *ngFor="let prof of professeurs" [value]="prof.id">{{ prof.nom }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Edit Intervention Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Intervention</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveEditedIntervention()">
+            <div class="mb-3">
+              <label for="editIntitule" class="form-label">Intitulé</label>
+              <input type="text" class="form-control" id="editIntitule" [(ngModel)]="selectedIntervention.intitule" name="editIntitule">
+            </div>
+            <div class="mb-3">
+              <label for="editNombreEvaluationsInter" class="form-label">Nombre d'évaluations</label>
+              <input type="number" class="form-control" id="editNombreEvaluationsInter" [(ngModel)]="selectedIntervention.nombreEvaluationsInter" name="editNombreEvaluationsInter">
+            </div>
+            <div class="mb-3">
+              <label for="editNombreHeuresCoursInter" class="form-label">Heures de cours</label>
+              <input type="number" class="form-control" id="editNombreHeuresCoursInter" [(ngModel)]="selectedIntervention.nombreHeuresCoursInter" name="editNombreHeuresCoursInter">
+            </div>
+            <div class="mb-3">
+              <label for="editNombreHeuresTDInter" class="form-label">Heures de TD</label>
+              <input type="number" class="form-control" id="editNombreHeuresTDInter" [(ngModel)]="selectedIntervention.nombreHeuresTDInter" name="editNombreHeuresTDInter">
+            </div>
+            <div class="mb-3">
+              <label for="editNombreHeuresTPInter" class="form-label">Heures de TP</label>
+              <input type="number" class="form-control" id="editNombreHeuresTPInter" [(ngModel)]="selectedIntervention.nombreHeuresTPInter" name="editNombreHeuresTPInter">
+            </div>
+            <div class="mb-3">
+              <label for="editModuleId" class="form-label">Module</label>
+              <select class="form-select" id="editModuleId" [(ngModel)]="selectedIntervention.moduleId" name="editModuleId">
+                <option *ngFor="let module of modules" [value]="module.id">{{ module.intitule }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editProfesseurId" class="form-label">Professeur</label>
+              <select class="form-select" id="editProfesseurId" [(ngModel)]="selectedIntervention.professeurId" name="editProfesseurId">
+                <option *ngFor="let prof of professeurs" [value]="prof.id">{{ prof.nom }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- View mode selector -->
+  <div class="mb-3">
+    <button class="btn btn-primary me-2" (click)="changeViewMode('table')">Table View</button>
+    <button class="btn btn-primary" (click)="changeViewMode('calendar')">Calendar View</button>
+  </div>
+
+  <!-- Table view -->
+  <div *ngIf="viewMode === 'table'">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Intitulé</th>
+          <th>Nombre d'éval.</th>
+          <th>Heures de cours</th>
+          <th>Heures de TD</th>
+          <th>Heures de TP</th>
+          <th>Module ID</th>
+          <th>Professeur ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let intervention of interventions">
+          <td>{{ intervention.id }}</td>
+          <td>{{ intervention.intitule }}</td>
+          <td>{{ intervention.nombreEvaluationsInter }}</td>
+          <td>{{ intervention.nombreHeuresCoursInter }}</td>
+          <td>{{ intervention.nombreHeuresTDInter }}</td>
+          <td>{{ intervention.nombreHeuresTPInter }}</td>
+          <td>{{ intervention.moduleId }}</td>
+          <td>{{ intervention.professeurId }}</td>
+          <td>
+            <button (click)="editIntervention(intervention)" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editModal">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button (click)="deleteIntervention(intervention.id)" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Calendar view -->
+  <div *ngIf="viewMode === 'calendar'">
+    <h2 class="text-center my-4">Calendar</h2>
+    <table class="table">
+      <thead>
+        <tr class="table-success">
+          <th scope="col">Prof / Module</th>
+          <ng-container *ngFor="let module of modules">
+            <th scope="col">{{ module.intitule }}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let prof of professeurs">
+          <tr>
+            <th scope="row table-warning">{{ prof.nom }}</th>
+            <ng-container *ngFor="let module of modules">
+              <td>
+                <ng-container *ngIf="interventionExists(prof.id, module.id)">
+                  <span class="badge bg-primary p-1 fs-6">Intervention({{ getNumberOfHours(prof.id, module.id) }} heures)</span>
+                </ng-container>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+  </div>
+</div>

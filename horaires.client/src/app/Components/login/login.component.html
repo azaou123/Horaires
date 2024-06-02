@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">Login</div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="email" class="my-2">Email address</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter email" [(ngModel)]="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password" class="my-2">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+            </div>
+            <div *ngIf="loginError" class="alert alert-danger my-2" role="alert">{{ loginError }}</div>
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row my-2">
+    <div class="col-9"><h2 class="my-2">Filiere List</h2></div>
+    <div class="col-3"><button class="btn btn-primary  mx-2" data-bs-toggle="modal" data-bs-target="#addFiliereModal">Add</button></div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom Filiere</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let filiere of filieres">
+        <td>{{ filiere.id }}</td>
+        <td>{{ filiere.nomFiliere }}</td>
+        <td>
+          <button (click)="openEditModal(filiere)" class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#editFiliereModal">Edit</button>
+          <button (click)="deleteFiliere(filiere.id)" class="btn btn-danger btn-sm">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Edit Filiere Modal -->
+  <div class="modal fade" id="editFiliereModal" tabindex="-1" aria-labelledby="editFiliereModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editFiliereModalLabel">Edit Filiere</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editFiliereForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nomFiliere" class="form-label">Nom Filiere</label>
+              <input id="nomFiliere" class="form-control" formControlName="nomFiliere">
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Filiere Modal -->
+  <div class="modal fade" id="addFiliereModal" tabindex="-1" aria-labelledby="addFiliereModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addFiliereModalLabel">Add Filiere</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addFiliereForm" (ngSubmit)="onAddSubmit()">
+            <div class="mb-3">
+              <label for="newNomFiliere" class="form-label">Nom Filiere</label>
+              <input id="newNomFiliere" class="form-control" formControlName="nomFiliere">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Filiere</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

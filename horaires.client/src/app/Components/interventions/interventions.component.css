@@ -1,0 +1,38 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-cell {
+  border: 1px solid #ddd;
+  padding: 5px;
+  height: 100px;
+  overflow: auto;
+}
+
+.calendar-date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.calendar-event {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 5px;
+  margin-bottom: 2px;
+  border-radius: 3px;
+}

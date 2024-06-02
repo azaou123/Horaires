@@ -1,6 +1,11 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import {ScriptLoaderService } from './Services/script-loader.service';
+
+
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ScriptLoaderService } from './services/script-loader.service';
+import { AuthService } from './services/auth.service'; // Import AuthService
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +21,26 @@ import {ScriptLoaderService } from './Services/script-loader.service';
     '../assets/css/custom.css'
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'horaires.client';
+  isLoggedIn: boolean = false; // Flag to indicate whether the user is logged in
+  private authSubscription: Subscription | undefined;
 
-  constructor(private scriptLoaderService: ScriptLoaderService) { }
+  constructor(
+    private scriptLoaderService: ScriptLoaderService,
+    private authService: AuthService, private router: Router // Inject AuthService
+  ) { }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit(): void {
+    this.authSubscription = this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
+
     this.scriptLoaderService.loadScript('assets/js/jquery.min.js').then(() => {
     }).catch(error => console.log('Error loading jQuery:', error));
     this.scriptLoaderService.loadScript('assets/js/jquery.min.js').then(() => {
@@ -48,5 +67,11 @@ export class AppComponent {
     }).catch(error => console.log('Error loading Custom.js:', error));
     this.scriptLoaderService.loadScript('assets/js/chart_custom_style1.js').then(() => {
     }).catch(error => console.log('Error loading Chart Custom Style 1:', error));
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

@@ -1,0 +1,129 @@
+<!-- modules.component.html -->
+<div class="container">
+  <div class="row my-3">
+    <h2 class="col-9 my-2">Modules List</h2>
+    <button class="col-3 btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addModuleModal" (click)="openAddModal()">Add Module</button>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Intitulé</th>
+        <th>Nombre d'éval.</th>
+        <th>Heures de cours</th>
+        <th>Heures de TD</th>
+        <th>Heures de TP</th>
+        <th>Filière ID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let module of modules">
+        <td>{{ module.id }}</td>
+        <td>{{ module.intitule }}</td>
+        <td>{{ module.nombreEvaluations }}</td>
+        <td>{{ module.nombreHeuresCours }}</td>
+        <td>{{ module.nombreHeuresTD }}</td>
+        <td>{{ module.nombreHeuresTP }}</td>
+        <td>{{ module.filiereId }}</td>
+        <td>
+          <button (click)="openEditModal(module)" class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#editModuleModal">Edit</button>
+          <button (click)="deleteModule(module.id)" class="btn btn-danger btn-sm">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Module Modal -->
+<div class="modal fade" id="addModuleModal" tabindex="-1" aria-labelledby="addModuleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModuleModalLabel">Add Module</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="addModuleIntitule" class="form-label">Intitulé</label>
+            <input type="text" class="form-control" id="addModuleIntitule" [(ngModel)]="selectedModule.intitule" name="intitule">
+          </div>
+          <div class="mb-3">
+            <label for="addModuleNbEvaluations" class="form-label">Nombre d'évaluations</label>
+            <input type="number" class="form-control" id="addModuleNbEvaluations" [(ngModel)]="selectedModule.nombreEvaluations" name="nombreEvaluations">
+          </div>
+          <div class="mb-3">
+            <label for="addModuleNbHeuresCours" class="form-label">Heures de cours</label>
+            <input type="number" class="form-control" id="addModuleNbHeuresCours" [(ngModel)]="selectedModule.nombreHeuresCours" name="nombreHeuresCours">
+          </div>
+          <div class="mb-3">
+            <label for="addModuleNbHeuresTD" class="form-label">Heures de TD</label>
+            <input type="number" class="form-control" id="addModuleNbHeuresTD" [(ngModel)]="selectedModule.nombreHeuresTD" name="nombreHeuresTD">
+          </div>
+          <div class="mb-3">
+            <label for="addModuleNbHeuresTP" class="form-label">Heures de TP</label>
+            <input type="number" class="form-control" id="addModuleNbHeuresTP" [(ngModel)]="selectedModule.nombreHeuresTP" name="nombreHeuresTP">
+          </div>
+          <div class="form-group">
+            <label for="addModuleFiliereId">Filiere</label>
+            <select id="addModuleFiliereId" class="form-control" [(ngModel)]="selectedModule.filiereId" name="filiereId" (change)="updateSelectedFiliereId($event)">
+              <option *ngFor="let filiere of filieres" [value]="filiere.id">{{ filiere.nomFiliere }}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addModule()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Module Modal -->
+<div class="modal fade" id="editModuleModal" tabindex="-1" aria-labelledby="editModuleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModuleModalLabel">Edit Module</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="editModuleIntitule" class="form-label">Intitulé</label>
+            <input type="text" class="form-control" id="editModuleIntitule" [(ngModel)]="selectedModule.intitule" name="intitule">
+          </div>
+          <div class="mb-3">
+            <label for="editModuleNbEvaluations" class="form-label">Nombre d'évaluations</label>
+            <input type="number" class="form-control" id="editModuleNbEvaluations" [(ngModel)]="selectedModule.nombreEvaluations" name="nombreEvaluations">
+          </div>
+          <div class="mb-3">
+            <label for="editModuleNbHeuresCours" class="form-label">Heures de cours</label>
+            <input type="number" class="form-control" id="editModuleNbHeuresCours" [(ngModel)]="selectedModule.nombreHeuresCours" name="nombreHeuresCours">
+          </div>
+          <div class="mb-3">
+            <label for="editModuleNbHeuresTD" class="form-label">Heures de TD</label>
+            <input type="number" class="form-control" id="editModuleNbHeuresTD" [(ngModel)]="selectedModule.nombreHeuresTD" name="nombreHeuresTD">
+          </div>
+          <div class="mb-3">
+            <label for="editModuleNbHeuresTP" class="form-label">Heures de TP</label>
+            <input type="number" class="form-control" id="editModuleNbHeuresTP" [(ngModel)]="selectedModule.nombreHeuresTP" name="nombreHeuresTP">
+          </div>
+          <div class="form-group">
+            <label for="addModuleFiliereId">Filiere</label>
+            <select id="addModuleFiliereId" class="form-control" [(ngModel)]="selectedModule.filiereId" name="filiereId">
+              <option *ngFor="let filiere of filieres" [value]="filiere.id">{{ filiere.nomFiliere }}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="editModule()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

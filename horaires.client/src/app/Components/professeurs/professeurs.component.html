@@ -1,0 +1,96 @@
+<!-- professeurs.component.html -->
+<div class="container">
+  <div class="row my-3">
+    <div class="col-9"><h2 class="my-2">Professeurs List</h2></div>
+    <div class="col-3"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button></div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let professeur of professeurs">
+        <td>{{ professeur.id }}</td>
+        <td>{{ professeur.nom }}</td>
+        <td>{{ professeur.prenom }}</td>
+        <td>{{ professeur.email }}</td>
+        <td>
+          <button (click)="openEditModal(professeur)" class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+          <button (click)="deleteProfesseur(professeur.id)" class="btn btn-danger btn-sm">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add Professeur Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Professeur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addProfesseur()">
+            <div class="mb-3">
+              <label for="addProfesseurNom" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="addProfesseurNom" [(ngModel)]="selectedProfesseur.nom" name="nom">
+            </div>
+            <div class="mb-3">
+              <label for="addProfesseurPrenom" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="addProfesseurPrenom" [(ngModel)]="selectedProfesseur.prenom" name="prenom">
+            </div>
+            <div class="mb-3">
+              <label for="addProfesseurEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="addProfesseurEmail" [(ngModel)]="selectedProfesseur.email" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="addProfesseurPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="addProfesseurPassword" [(ngModel)]="selectedProfesseur.password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Professeur Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Professeur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="editProfesseur()">
+            <div class="mb-3">
+              <label for="editProfesseurNom" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="editProfesseurNom" [(ngModel)]="selectedProfesseur.nom" name="nom">
+            </div>
+            <div class="mb-3">
+              <label for="editProfesseurPrenom" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="editProfesseurPrenom" [(ngModel)]="selectedProfesseur.prenom" name="prenom">
+            </div>
+            <div class="mb-3">
+              <label for="editProfesseurEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="editProfesseurEmail" [(ngModel)]="selectedProfesseur.email" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="editProfesseurPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="editProfesseurPassword" [(ngModel)]="selectedProfesseur.password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
