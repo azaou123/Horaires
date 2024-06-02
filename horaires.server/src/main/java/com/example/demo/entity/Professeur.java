@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +16,8 @@ public class Professeur {
 	private Long id;
 	private String nom;
 	private String prenom;
-	private String email;
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 	private String password;
 	
 	@OneToMany(mappedBy = "professeur")

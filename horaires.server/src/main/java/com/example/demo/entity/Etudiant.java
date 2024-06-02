@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,11 +17,13 @@ public class Etudiant {
 	private Long id;
 	private String nom;
 	private String prenom;
+    @Column(name = "email", unique = true, nullable = false)
 	private String email;
 	private String password;
 	
 	@ManyToOne
     @JoinColumn(name = "filiere_id")
+	 
     private Filiere filiere;
 	
 	// Getters and setters

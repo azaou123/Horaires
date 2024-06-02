@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Etudiant;
+import com.example.demo.entity.Filiere;
 import com.example.demo.entity.Intervention;
 import com.example.demo.entity.Professeur;
 import com.example.demo.repository.EtudiantRepository;
+import com.example.demo.repository.FiliereRepository;
 import com.example.demo.repository.InterventionRepository;
 import com.example.demo.repository.ProfesseurRepository;
 
@@ -23,6 +25,8 @@ public class UserService {
 	@Autowired
     private InterventionRepository interventionRepository;
 	
+	@Autowired
+    private FiliereRepository filiereRepository;
 	//Etudiant
 	
 	public Etudiant saveEtudiant(Etudiant etudiant) {
@@ -47,6 +51,15 @@ public class UserService {
         }
         return null;
     }
+    
+    public Etudiant addEtudiantToFiliere(Long filiereId, Etudiant etudiant) {
+        Filiere filiere = filiereRepository.findById(filiereId)
+                .orElseThrow(() -> new RuntimeException("Filiere not found"));
+
+        etudiant.setFiliere(filiere);
+        return etudiantRepository.save(etudiant);
+    }
+
     
     //Professeur
 	
@@ -74,12 +87,12 @@ public class UserService {
         return null;
     }
     
-    public Intervention addInterventionToProfesseur(Long professeurId, Intervention intervention) {
+    /*public Intervention addInterventionToProfesseur(Long professeurId, Intervention intervention) {
         Professeur professeur = professeurRepository.findById(professeurId)
             .orElseThrow(() -> new RuntimeException("Professeur not found"));
 
         intervention.setProfesseur(professeur);
         return interventionRepository.save(intervention);
-    }
+    }*/
 
 }

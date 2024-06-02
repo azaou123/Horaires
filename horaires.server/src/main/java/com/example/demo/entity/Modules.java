@@ -1,8 +1,12 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +19,7 @@ public class Modules {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	  @Column(unique = true, nullable = false)
 	private String intitule;
 	private int nombreHeuresCours;
 	private int nombreHeuresTD;
@@ -25,8 +30,9 @@ public class Modules {
 	@JoinColumn(name = "filier_id")
 	private Filiere filiere;
 	
-	@OneToMany(mappedBy = "module")
-	private List<Intervention> interventions;
+	// In Modules entity class
+	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Intervention> interventions = new ArrayList<>();
 
 	public Long getId() {
 		return id;

@@ -1,18 +1,12 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.FiliereDTO;
+import com.example.demo.dto.ModuleDTO;
 import com.example.demo.entity.Etudiant;
 import com.example.demo.entity.Filiere;
 import com.example.demo.entity.Modules;
@@ -21,26 +15,48 @@ import com.example.demo.service.FiliereService;
 @RestController
 @RequestMapping("/api/filieres")
 public class FiliereController {
-	@Autowired
-	private FiliereService filiereService;
-	
-	@PostMapping
-	public ResponseEntity<Filiere> createFiliere(@RequestBody Filiere filiere){
-		return ResponseEntity.ok(filiereService.saveFiliere(filiere));
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<Filiere>> getAllFilieres(){
-		return ResponseEntity.ok(filiereService.getAllFilieres());
-	}
-	
-	@GetMapping("/{id}")
-    public ResponseEntity<Filiere> getFiliereById(@PathVariable Long id) {
-        return ResponseEntity.ok(filiereService.getFiliereById(id));
+
+    @Autowired
+    private FiliereService filiereService;
+
+    @PostMapping
+    public ResponseEntity<FiliereDTO> createFiliere(@RequestBody FiliereDTO filiereDTO) {
+        Filiere filiere = new Filiere();
+        filiere.setNomFiliere(filiereDTO.getNomFiliere());
+        Filiere savedFiliere = filiereService.saveFiliere(filiere);
+        return ResponseEntity.ok(new FiliereDTO(savedFiliere.getId(), savedFiliere.getNomFiliere()));
     }
-	@PutMapping("/{id}")
-    public ResponseEntity<Filiere> updateFiliere(@PathVariable Long id, @RequestBody Filiere filiere) {
-        return ResponseEntity.ok(filiereService.updateFiliere(id, filiere));
+
+    @GetMapping
+    public ResponseEntity<List<FiliereDTO>> getAllFilieres() {
+        List<Filiere> filieres = filiereService.getAllFilieres();
+        List<FiliereDTO> filiereDTOs = filieres.stream().map(f -> {
+            List<Long> moduleIds = f.getModules().stream().map(Modules::getId).collect(Collectors.toList());
+            List<Long> etudiantIds = f.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
+            return new FiliereDTO(f.getId(), f.getNomFiliere(), moduleIds, etudiantIds);
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(filiereDTOs);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FiliereDTO> getFiliereById(@PathVariable Long id) {
+        Filiere filiere = filiereService.getFiliereById(id);
+        List<Long> moduleIds = filiere.getModules().stream().map(Modules::getId).collect(Collectors.toList());
+        List<Long> etudiantIds = filiere.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
+        return ResponseEntity.ok(new FiliereDTO(filiere.getId(), filiere.getNomFiliere(), moduleIds, etudiantIds));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FiliereDTO> updateFiliere(@PathVariable Long id, @RequestBody FiliereDTO filiereDTO) {
+        Filiere filiere = new Filiere();
+        filiere.setId(id);
+        filiere.setNomFiliere(filiereDTO.getNomFiliere());
+        Filiere updatedFiliere = filiereService.updateFiliere(id, filiere);
+        if (updatedFiliere != null) {
+            return ResponseEntity.ok(new FiliereDTO(updatedFiliere.getId(), updatedFiliere.getNomFiliere()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -48,14 +64,26 @@ public class FiliereController {
         filiereService.deleteFiliere(id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/{id}/modules")
-    public ResponseEntity<Filiere> addModuleToFiliere(@PathVariable Long id, @RequestBody Modules module) {
-        return ResponseEntity.ok(filiereService.addModuleToFiliere(id, module));
-    }
 
-    @PostMapping("/{id}/etudiants")
-    public ResponseEntity<Filiere> addEtudiantToFiliere(@PathVariable Long id, @RequestBody Etudiant etudiant) {
-        return ResponseEntity.ok(filiereService.addEtudiantToFiliere(id, etudiant));
-    }
+    /*@PostMapping("/{filiereId}/modules/{moduleId}")
+    public ResponseEntity<FiliereDTO> addModuleToFiliere(@PathVariable Long id, @RequestBody ModuleDTO moduleDTO) {
+        Modules module = new Modules();
+        module.setIntitule(moduleDTO.getIntitule());
+        module.setNombreHeuresCours(moduleDTO.getNombreHeuresCours());
+        module.setNombreHeuresTD(moduleDTO.getNombreHeuresTD());
+        module.setNombreHeuresTP(moduleDTO.getNombreHeuresTP());
+        module.setNombreEvaluations(moduleDTO.getNombreEvaluations());
+        Filiere updatedFiliere = filiereService.addModuleToFiliere(id, module);
+        List<Long> moduleIds = updatedFiliere.getModules().stream().map(Modules::getId).collect(Collectors.toList());
+        List<Long> etudiantIds = updatedFiliere.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
+        return ResponseEntity.ok(new FiliereDTO(updatedFiliere.getId(), updatedFiliere.getNomFiliere(), moduleIds, etudiantIds));
+    }*/
 
+   /* @PostMapping("/{id}/etudiants")
+    public ResponseEntity<FiliereDTO> addEtudiantToFiliere(@PathVariable Long id, @RequestBody Etudiant etudiant) {
+        Filiere updatedFiliere = filiereService.addEtudiantToFiliere(id, etudiant);
+        List<Long> moduleIds = updatedFiliere.getModules().stream().map(Modules::getId).collect(Collectors.toList());
+        List<Long> etudiantIds = updatedFiliere.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
+        return ResponseEntity.ok(new FiliereDTO(updatedFiliere.getId(), updatedFiliere.getNomFiliere(), moduleIds, etudiantIds));
+    }*/
 }

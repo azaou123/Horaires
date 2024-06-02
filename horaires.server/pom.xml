@@ -50,6 +50,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version> <!-- Or the version compatible with your Servlet container -->
+    <scope>provided</scope>
+</dependency>
 	</dependencies>
 
 	<build>
