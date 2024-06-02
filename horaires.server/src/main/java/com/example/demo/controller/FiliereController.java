@@ -65,25 +65,5 @@ public class FiliereController {
         return ResponseEntity.noContent().build();
     }
 
-    /*@PostMapping("/{filiereId}/modules/{moduleId}")
-    public ResponseEntity<FiliereDTO> addModuleToFiliere(@PathVariable Long id, @RequestBody ModuleDTO moduleDTO) {
-        Modules module = new Modules();
-        module.setIntitule(moduleDTO.getIntitule());
-        module.setNombreHeuresCours(moduleDTO.getNombreHeuresCours());
-        module.setNombreHeuresTD(moduleDTO.getNombreHeuresTD());
-        module.setNombreHeuresTP(moduleDTO.getNombreHeuresTP());
-        module.setNombreEvaluations(moduleDTO.getNombreEvaluations());
-        Filiere updatedFiliere = filiereService.addModuleToFiliere(id, module);
-        List<Long> moduleIds = updatedFiliere.getModules().stream().map(Modules::getId).collect(Collectors.toList());
-        List<Long> etudiantIds = updatedFiliere.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
-        return ResponseEntity.ok(new FiliereDTO(updatedFiliere.getId(), updatedFiliere.getNomFiliere(), moduleIds, etudiantIds));
-    }*/
-
-   /* @PostMapping("/{id}/etudiants")
-    public ResponseEntity<FiliereDTO> addEtudiantToFiliere(@PathVariable Long id, @RequestBody Etudiant etudiant) {
-        Filiere updatedFiliere = filiereService.addEtudiantToFiliere(id, etudiant);
-        List<Long> moduleIds = updatedFiliere.getModules().stream().map(Modules::getId).collect(Collectors.toList());
-        List<Long> etudiantIds = updatedFiliere.getEtudiants().stream().map(Etudiant::getId).collect(Collectors.toList());
-        return ResponseEntity.ok(new FiliereDTO(updatedFiliere.getId(), updatedFiliere.getNomFiliere(), moduleIds, etudiantIds));
-    }*/
+    
 }
