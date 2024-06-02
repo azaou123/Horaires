@@ -78,19 +78,7 @@ public class ProfesseurController {
         return ResponseEntity.noContent().build();
     }
 
-    /*@PostMapping("/{id}/interventions")
-    public ResponseEntity<ProfesseurDTO> addInterventionToProfesseur(@PathVariable Long id, @RequestBody Intervention intervention) {
-        Intervention addedIntervention = userService.addInterventionToProfesseur(id, intervention);
-        Professeur updatedProfesseur = userService.getProfesseurById(id);
-        
-        List<Long> interventionIds = updatedProfesseur.getInterventions().stream()
-                                              .map(Intervention::getId)
-                                              .collect(Collectors.toList());
-        
-        ProfesseurDTO professeurDTO = new ProfesseurDTO(updatedProfesseur.getId(), updatedProfesseur.getNom(), updatedProfesseur.getPrenom(), updatedProfesseur.getEmail(), updatedProfesseur.getPassword(), interventionIds);
-        
-        return ResponseEntity.ok(professeurDTO);
-    }*/
+    
 
 
 }
